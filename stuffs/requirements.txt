@@ -1,0 +1,3 @@
+To gain good understanding on "Getting and Cleaning Data", these are pre-requistes:-
+1. Must have completed/finished Data Scientist Toolbox course.
+2. Must have completed/finished R Programming course.
