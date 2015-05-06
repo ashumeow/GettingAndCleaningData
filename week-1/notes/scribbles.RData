@@ -1,0 +1,21 @@
+> file.exists("random")
+[1] TRUE
+> dir.create("test")
+> if(file.exists("test")) {
++ print("true")
++ } else {
++ dir.create("test")
++ }
+[1] "true"
+
+## downloading a file
+> install.packages("downloader")
+> library(RCurl)
+> library(downloader)
+> fileUrl <- "https://data.nasa.gov/api/views/b67r-rgxc/rows.csv?accessType=DOWNLOAD"
+> download.file(fileUrl,destfile="./test/nasa-comets-orbital-elements.csv") ## for Mac, use method="curl"
+> list.files("./test")
+[1] "nasa-comets-orbital-elements.csv"
+> dateDownloaded <- date()
+> dateDownloaded
+[1] "Wed May 06 14:37:49 2015"
