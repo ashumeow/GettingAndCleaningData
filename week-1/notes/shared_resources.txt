@@ -1,0 +1,2 @@
+1. Extracting data from XML - University of Berkeley - Stats
+http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf
