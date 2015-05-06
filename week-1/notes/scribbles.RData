@@ -19,3 +19,60 @@
 > dateDownloaded <- date()
 > dateDownloaded
 [1] "Wed May 06 14:37:49 2015"
+
+## Reading local files
+> nasa_comet_data <- read.table("./test/nasa-comets-orbital-elements.csv",sep=",",header=TRUE)
+> head(nasa_comet_data)
+            Object Epoch..TDB. TP..TDB.
+1        1P/Halley       49400  2446467
+2         2P/Encke       56870  2456618
+3         3D/Biela       -9480  2390514
+4       5D/Brorsen        7440  2407440
+5 7P/Pons-Winnecke       56981  2457053
+6        8P/Tuttle       54374  2454493
+          e   i..deg.  w..deg. Node..deg.
+1 0.9671429 162.26269 111.3325   58.42008
+2 0.8482683  11.78000 186.5403  334.56981
+3 0.7512990  13.21640 221.6588  250.66900
+4 0.8097960  29.38210  14.9468  102.96760
+5 0.6375275  22.33501 172.5062   93.41633
+6 0.8197997  54.98318 207.5092  270.34165
+     q..AU. Q..AU. P..yr. MOID..AU. A1..AU.d.2.
+1 0.5859781  35.08  75.32  0.063782    2.70e-10
+2 0.3360924   4.09   3.30  0.173092    1.58e-10
+3 0.8790730   6.19   6.65  0.000518    3.90e-09
+4 0.5898470   5.61   5.46  0.366559    1.27e-08
+5 1.2392148   5.60   6.32  0.224191    7.86e-11
+6 1.0271166  10.37  13.61  0.095310    6.89e-10
+  A2..AU.d.2. A3..AU.d.2. DT..d.      ref
+1    1.55e-10          NA     NA  J863/77
+2   -5.05e-12          NA     NA       74
+3   -2.54e-10          NA     NA IAUCAT03
+4    1.34e-09          NA     NA IAUCAT03
+5   -1.15e-11   -1.53e-10    131  K088/14
+6    1.37e-10   -4.59e-10     NA  K074/27
+       Object_name
+1        1P/Halley
+2         2P/Encke
+3         3D/Biela
+4       5D/Brorsen
+5 7P/Pons-Winnecke
+6        8P/Tuttle
+
+> ## Downloading file in excel format
+> fileUrl <- "https://data.nasa.gov/api/views/b67r-rgxc/rows.csv?accessType=DOWNLOAD"
+> download.file(fileUrl,destfile="./test/nasa-comets-orbital-elements.xlsx")
+> dateDownloaded <- date()
+> dateDownloaded
+[1] "Thu May 07 00:03:37 2015"
+> ## using xlsx
+> install.packages("xlsx") 
+## this will also install rJava as well as xlsxjars packages along with xlsx package
+> library(xlsx)
+> ## you will receive an error regarding rJava
+## Setting environment variable for rJava
+> Sys.getenv("JAVA_HOME")
+[1] "D:\\nand2tetris\\tools\\jre1.8.45\\bin"
+> Sys.setenv(JAVA_HOME='D:\\nand2tetris\\tools\\jre1.8.45')
+> Sys.getenv("JAVA_HOME")
+[1] "D:\\nand2tetris\\tools\\jre1.8.45"
