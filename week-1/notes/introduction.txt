@@ -1,0 +1,77 @@
+WEEK 1 - NOTES
+
+INTRODUCTION:-
+Part 1 - Raw and Processed Data
+Part 2 - Components of Tidy data
+
+----------------------------------------------
+
+PART - 1 - Raw and Processed Data
+
+Data can be expressed as a qualitative or quantitative variables belonging to a set of entities.
+
+What is Getting the Data all about?
+It's all about processing a raw data into a tidy data.
+
+Raw data is the orginal source.
+Functions:- Undergoes processing which can only be done once.
+
+Processed data is the data that's ready for analysis.
+Functions:- Merging, Subsetting, Transforming.
+Mandatory:- All steps will be recorded.
+
+Example of processing pipeline:-
+http://cbcb.umd.edu/~hcorrada/CMSC858B/lectures/lect22_seqIntro/seqIntro.pdf
+
+------------------------------------------------
+
+PART - 2 - Components of Tidy Data
+
+Requiremens while converting from Raw Data into Tidy Data:-
+(i) Raw data
+(ii) Tidy dataset
+(iii) Codebook for describing each vars. and vals. in tidy dataset
+(iv) Explicit & each recipe from step 1 -> steps 2,3
+
+How to judge if it's raw data?
+(i) Unformatted Excel file
+(ii) Complicated JSON data while scraping from Twitter API
+(iii) Strange binary file 
+(iv) Hand-written numbers collected while looking through a microscope
+
+When the raw data is seen in good form?
+(i) No software executed on the data
+(ii) No data manipulation
+(iii) No data removal from the dataset
+(iv) No data summarization
+
+Requirements for Tidy data:-
+(i) Each measured var. should be in 1 column
+(ii) Each diff. observation of that var. should be in a different row
+(iii) There should be 1 table for each kind/type of var.
+(iv) If it's multiple tables, then a table column should be included that allows to get linked.
+(v) Some important tips:
+(v.a) 1 row should be included at top of each file with var. names.
+(v.b) Must make var. names as human readable.
+(v.c) General table should be saved in 1 file per table.
+
+Code book:-
+(i) Information about the vars. in the dataset stored that's not found in the tidy data
+(ii) Information about summary choices
+(iii) Information about the experimental study design
+(iv) Important tips:
+(iv.a) Word/text file is the common format
+(iv.b) A separate section called as "study design" that describes how the data has been collected.
+(iv.c) A separate section called as "code book" which describes each var. and it's units
+
+Instruction List:-
+(i) Overview
+The input for the script -> raw data
+The output -> processed and tidy data
+No parameters
+(ii) Steps
+Step 1: Take raw file and summarize S/W with parameters (like a, b and c assigning some values)
+Step 2: Run S/W separately for each sample
+Step 3: Take column as .out for each sample which is the corresponding row in the output dataset
+
+related link:- https://github.com/ashumeow/datasharing
