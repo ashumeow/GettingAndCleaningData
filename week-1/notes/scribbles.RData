@@ -76,3 +76,13 @@
 > Sys.setenv(JAVA_HOME='D:\\nand2tetris\\tools\\jre1.8.45')
 > Sys.getenv("JAVA_HOME")
 [1] "D:\\nand2tetris\\tools\\jre1.8.45"
+> library(xlsx)
+> library(xlsxjars)
+> library(rJava)
+> nasa_comet_data <- read.xlsx("./test/nasa-comets-orbital-elements.xlsx", sheetIndex=1, header = TRUE)
+> head(nasa_comet_data)
+## Disadvantage:- It doesn't work with data above 500 bytes :( Try smaller ones... So bad.. Needs improvement!
+> colIndex <- 2:3
+> rowIndex <- 1:4
+> nasa_comet_dataset <- read.xlsx("./test/nasa-comets-orbital-elements.xlsx", sheetIndex=1, colIndex=colIndex,rowIndex=rowIndex)
+> nasa_comet_dataset
