@@ -81,8 +81,16 @@
 > library(rJava)
 > nasa_comet_data <- read.xlsx("./test/nasa-comets-orbital-elements.xlsx", sheetIndex=1, header = TRUE)
 > head(nasa_comet_data)
-## Disadvantage:- It doesn't work with data above 500 bytes :( Try smaller ones... So bad.. Needs improvement!
+## Disadvantage:- It doesn't work with data above 500 bytes :(
+## getting issues here... Not satisfied since it doesn't work with larger ones
 > colIndex <- 2:3
 > rowIndex <- 1:4
 > nasa_comet_dataset <- read.xlsx("./test/nasa-comets-orbital-elements.xlsx", sheetIndex=1, colIndex=colIndex,rowIndex=rowIndex)
 > nasa_comet_dataset
+## conclusion in .xlsx:- 
+## .xlsx lecture wasn't that good. (i) I'd to refer stackoverflow for setting Java environment variables for R
+## and (ii) I'd to refer this resource too -- http://www.r-bloggers.com/read-excel-files-from-r/
+## Almost fell asleep for an hour trying to repair.
+## It's better to Convert excel files in csv format and use it.
+## csv format is quite easy 
+## Excel formats such as .xls and .xlsx are pretty much difficult to play.
