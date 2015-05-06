@@ -88,9 +88,55 @@
 > nasa_comet_dataset <- read.xlsx("./test/nasa-comets-orbital-elements.xlsx", sheetIndex=1, colIndex=colIndex,rowIndex=rowIndex)
 > nasa_comet_dataset
 ## conclusion in .xlsx:- 
-## .xlsx lecture wasn't that good. (i) I'd to refer stackoverflow for setting Java environment variables for R
-## and (ii) I'd to refer this resource too -- http://www.r-bloggers.com/read-excel-files-from-r/
-## Almost fell asleep for an hour trying to repair.
-## It's better to Convert excel files in csv format and use it.
+## almost fell asleep for an hour trying to repair.
+## Convert excel files in csv format and use it.
 ## csv format is quite easy 
-## Excel formats such as .xls and .xlsx are pretty much difficult to play.
+## Excel formats such as .xls and .xlsx are pretty much difficult
+
+> ## Reading XML
+> library(XML)
+> meowURL <- "http://www.w3schools.com/xml/simple.xml"
+> doc <- xmlTreeParse(meowURL,useInternal=TRUE)
+> rootNode <- xmlRoot(doc)
+> xmlName(rootNode)
+[1] "breakfast_menu"
+> names(rootNode)
+  food   food   food   food   food 
+"food" "food" "food" "food" "food" 
+> rootNode[[1]]
+<food>
+  <name>Belgian Waffles</name>
+  <price>$5.95</price>
+  <description>Two of our famous Belgian Waffles with plenty of real maple syrup</description>
+  <calories>650</calories>
+</food> 
+> rootNode[[1]][[1]]
+<name>Belgian Waffles</name> 
+> xmlSApply(rootNode,xmlValue)
+                                                                                                                    food 
+                              "Belgian Waffles$5.95Two of our famous Belgian Waffles with plenty of real maple syrup650" 
+                                                                                                                    food 
+                   "Strawberry Belgian Waffles$7.95Light Belgian waffles covered with strawberries and whipped cream900" 
+                                                                                                                    food 
+"Berry-Berry Belgian Waffles$8.95Light Belgian waffles covered with an assortment of fresh berries and whipped cream900" 
+                                                                                                                    food 
+                                               "French Toast$4.50Thick slices made from our homemade sourdough bread600" 
+                                                                                                                    food 
+                        "Homestyle Breakfast$6.95Two eggs, bacon or sausage, toast, and our ever-popular hash browns950" 
+> xpathSApply(rootNode,"//name",xmlValue)
+[1] "Belgian Waffles"            
+[2] "Strawberry Belgian Waffles" 
+[3] "Berry-Berry Belgian Waffles"
+[4] "French Toast"               
+[5] "Homestyle Breakfast"        
+> xpathSApply(rootNode,"//price",xmlValue)
+[1] "$5.95" "$7.95" "$8.95" "$4.50" "$6.95"
+> fileURL <- "http://espn.go.com/nfl/team/_/name/bal/baltimore-ravens"
+> doc1 <- htmlTreeParse(fileURL,useInternal=TRUE)
+> scores <- xpathSApply(doc1,"//li[@class='score']",xmlValue)
+> teams <- xpathSApply(doc1,"//li[@class='team-name']",xmlValue)
+> scores
+list()
+> teams
+[1] "Baltimore RavensRavens"
+[2] "Baltimore RavensRavens"
