@@ -1264,3 +1264,245 @@ The downloaded binary packages are in
 4          4.6         3.1          1.5         0.2  setosa
 5          5.0         3.6          1.4         0.2  setosa
 6          5.4         3.9          1.7         0.4  setosa
+
+> install.packages("data.table")
+--- Please select a CRAN mirror for use in this session ---
+also installing the dependency ‘chron’
+
+trying URL 'http://ftp.iitm.ac.in/cran/bin/windows/contrib/3.1/chron_2.3-45.zip'
+Content type 'application/zip' length 107737 bytes (105 KB)
+opened URL
+downloaded 105 KB
+
+trying URL 'http://ftp.iitm.ac.in/cran/bin/windows/contrib/3.1/data.table_1.9.4.zip'
+Content type 'application/zip' length 1304010 bytes (1.2 MB)
+opened URL
+downloaded 1.2 MB
+
+package ‘chron’ successfully unpacked and MD5 sums checked
+package ‘data.table’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+        C:\Users\dell\AppData\Local\Temp\Rtmpkz1bbx\downloaded_packages
+> library(data.table)
+data.table 1.9.4  For help type: ?data.table
+*** NB: by=.EACHI is now explicit. See README to restore previous behaviour.
+> DF = data.frame(x=rnorm(9),y=rep(c("a","b","c"),each=3),z=rnorm(9))
+> head(DF,3)
+           x y          z
+1 -1.5171072 a -1.4431242
+2  0.3591521 a  0.4293829
+3  0.4046415 a  0.1775313
+> DT = data.frame(x=rnorm(9),y=rep(c("a","b","c"),each=3),z=rnorm(9))
+> head(DT,3)
+            x y          z
+1 -0.72257226 a -0.4782412
+2  0.03335492 a  1.2194356
+3  1.18773530 a  0.9455035
+> tables()
+No objects of class data.table exist in .GlobalEnv
+> list.tables()
+Error: could not find function "list.tables"
+> tables(DT)
+No objects of class data.table exist in .GlobalEnv
+> DT[2,]
+           x y        z
+2 0.03335492 a 1.219436
+> DT[DT$y="a",]
+Error: unexpected '=' in "DT[DT$y="
+> DT[DT$y=="a",]
+            x y          z
+1 -0.72257226 a -0.4782412
+2  0.03335492 a  1.2194356
+3  1.18773530 a  0.9455035
+> DT[c(2,3)]
+  y          z
+1 a -0.4782412
+2 a  1.2194356
+3 a  0.9455035
+4 b  1.4620803
+5 b  0.8030863
+6 b -0.1304705
+7 c -1.9932873
+8 c -0.6362033
+9 c  0.1033966
+> [DT,c(2,3)]
+Error: unexpected '[' in "["
+> DT[,c(2,3)]
+  y          z
+1 a -0.4782412
+2 a  1.2194356
+3 a  0.9455035
+4 b  1.4620803
+5 b  0.8030863
+6 b -0.1304705
+7 c -1.9932873
+8 c -0.6362033
+9 c  0.1033966
+> DT[c(2,3),]
+           x y         z
+2 0.03335492 a 1.2194356
+3 1.18773530 a 0.9455035
+> {
++ x=1
++ y=2
++ }
+> k={print(10);5}
+[1] 10
+> print(k)
+[1] 5
+> DT[,list(mean(x),sum(z))]
+> DT[,table(y)]
+[1] -0.72257226  0.03335492  1.18773530 -1.22210544  0.21869405  0.78690920
+[7] -1.65601958 -0.54874808  0.13299642
+> DT[,list(mean(x),sum(y))]
+> DT[,w:=z^2]
+> DT2 <- DT
+> DT[,y:=2]
+> head(DT,n=3)
+            x y          z
+1 -0.72257226 a -0.4782412
+2  0.03335492 a  1.2194356
+3  1.18773530 a  0.9455035
+> head(DT2,n=3)
+            x y          z
+1 -0.72257226 a -0.4782412
+2  0.03335492 a  1.2194356
+3  1.18773530 a  0.9455035
+
+> library(data.table)
+data.table 1.9.4  For help type: ?data.table
+*** NB: by=.EACHI is now explicit. See README to restore previous behaviour.
+> set.seed(123)
+> DT <- data.table(x=sample(letters[1:3],1E5,TRUE))
+> DT[,.N,by=x]
+   x     N
+1: a 33387
+2: c 33201
+3: b 33412
+> DT <- data.table(x=rep(c("a","b","c"),each=100),y=rnorm(300))
+> setkey(DT,x)
+> DT['a']
+     x           y
+  1: a  0.25958973
+  2: a  0.91751072
+  3: a -0.72231834
+  4: a -0.80828402
+  5: a -0.14135202
+  6: a  2.25701345
+  7: a -2.37955015
+  8: a -0.45425393
+  9: a -0.06007418
+ 10: a  0.86090061
+ 11: a -1.78466393
+ 12: a -0.13074225
+ 13: a -0.36983749
+ 14: a -0.18065990
+ 15: a -1.04973030
+ 16: a  0.37831550
+ 17: a -1.37079353
+ 18: a -0.31611578
+ 19: a  0.39435003
+ 20: a -1.68987831
+ 21: a -1.46233527
+ 22: a  2.55837664
+ 23: a  0.08788697
+ 24: a  1.73141492
+ 25: a  1.21512638
+ 26: a  0.29954390
+ 27: a -0.17245754
+ 28: a  1.13249663
+ 29: a  0.02319828
+ 30: a  1.33587399
+ 31: a -1.09879007
+ 32: a -0.58176064
+ 33: a  0.03892452
+ 34: a  1.07315441
+ 35: a  1.34969593
+ 36: a  1.19527937
+ 37: a -0.02217912
+ 38: a  0.69849448
+ 39: a  0.67240626
+ 40: a -0.79164585
+ 41: a -0.21790545
+ 42: a  0.02307037
+ 43: a  0.11539395
+ 44: a -0.27708029
+ 45: a  0.03688377
+ 46: a  0.47520014
+ 47: a  1.70748924
+ 48: a  1.07600560
+ 49: a -1.34571320
+ 50: a -1.44024891
+ 51: a -0.39392783
+ 52: a  0.58106297
+ 53: a -0.17078819
+ 54: a -0.90585446
+ 55: a  0.15621346
+ 56: a -0.37322530
+ 57: a -0.34587104
+ 58: a -0.35828720
+ 59: a -0.13306601
+ 60: a -0.08959642
+ 61: a  0.62793032
+ 62: a -1.42882873
+ 63: a  0.17255399
+ 64: a -0.79115025
+ 65: a  1.26204078
+ 66: a -0.26940548
+ 67: a  0.15698296
+ 68: a -0.76059823
+ 69: a  1.37060069
+ 70: a  0.03758155
+ 71: a  0.44949417
+ 72: a  2.78868764
+ 73: a -0.46848614
+ 74: a  1.01260608
+ 75: a -0.04374086
+ 76: a  1.40669725
+ 77: a  0.41992874
+ 78: a  0.31008615
+ 79: a  1.11904687
+ 80: a -1.29814018
+ 81: a -1.28248182
+ 82: a  1.65942788
+ 83: a  0.78374544
+ 84: a  0.57771022
+ 85: a -0.26724640
+ 86: a -0.64569141
+ 87: a -0.44952912
+ 88: a -0.82619821
+ 89: a  1.05503854
+ 90: a -0.87926983
+ 91: a -1.27712832
+ 92: a -0.63412243
+ 93: a  0.66470047
+ 94: a -0.50958183
+ 95: a  0.40736335
+ 96: a  1.67774776
+ 97: a -1.05205570
+ 98: a -0.63690737
+ 99: a  0.56539163
+100: a  0.38015779
+     x           y
+
+> DT1 <- data.table(x=c('a','a','b','dt1'),y=1:4)
+> DT2 <- data.table(x=c('a','b','dt2'),z=5:7)
+> setkey(DT1,x); setkey(DT2,x)
+> merge(DT1,DT2)
+   x y z
+1: a 1 5
+2: a 2 5
+3: b 3 6
+> big_df <- data.frame(x=rnorm(1E6),y=rnorm(1E6))
+> file <- tempfile()
+> write.table(big_df,file=file,row.names=FALSE,col.names=TRUE,sep="\t",quote=FALSE)
+> system.time(fread(file))
+
+Read 66.0% of 1000000 rows
+Read 1000000 rows and 2 (of 2) columns from 0.035 GB file in 00:00:03
+   user  system elapsed 
+   2.95    0.01    2.97 
+> system.time(read.table(file,header=TRUE,sep="\t"))
+   user  system elapsed 
+  14.11    0.18   14.30 
