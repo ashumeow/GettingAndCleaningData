@@ -1,0 +1,13 @@
+For RMySQL:-
+Step 1:
+Go to MySQL official link --> https://dev.mysql.com/downloads/
+As a windows user who don't have MS office and MS Visual studio, i didn't download full version or development version.
+I simply directly downloaded "MySQL Server". That is more enough and it doesn't require any prior requirements.
+We need database server host to launch RSQL stuffs & that's why we are downloading MySQL... So, MySQL server itself is enough. ;)
+If you're downloading full version or developer one, then you need to have some MS Office packages as well as Visual Studio.
+
+Step 2:
+Goto RStudio,
+install.packages("RMySQL")
+
+That's it. =)
