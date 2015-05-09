@@ -1,28 +1,406 @@
 ### READING FROM MYSQL
 
-meowDB <- dbConnect(MySQL(),user="genome",
-host="genome-mysql.cse.ucsc.edu")
-result <- dbGetQuery(meowDB,"show databases;"); dbDisconnect(meowDB);
+> library(RMySQL)
+Loading required package: DBI
+> meowDB <- dbConnect(MySQL(),user="genome",host="genome-mysql.cse.ucsc.edu")
+> result <- dbGetQuery(meowDB,"show databases;")
+> result
+              Database
+1   information_schema
+2              ailMel1
+3              allMis1
+4              anoCar1
+5              anoCar2
+6              anoGam1
+7              apiMel1
+8              apiMel2
+9              aplCal1
+10             balAcu1
+11             bosTau2
+12             bosTau3
+13             bosTau4
+14             bosTau5
+15             bosTau6
+16             bosTau7
+17             bosTau8
+18           bosTauMd3
+19             braFlo1
+20             caeJap1
+21              caePb1
+22              caePb2
+23             caeRem2
+24             caeRem3
+25             calJac1
+26             calJac3
+27             calMil1
+28             canFam1
+29             canFam2
+30             canFam3
+31             cavPor3
+32                 cb1
+33                 cb3
+34                ce10
+35                 ce2
+36                 ce4
+37                 ce6
+38             cerSim1
+39             choHof1
+40             chrPic1
+41                 ci1
+42                 ci2
+43             criGri1
+44             danRer1
+45            danRer10
+46             danRer2
+47             danRer3
+48             danRer4
+49             danRer5
+50             danRer6
+51             danRer7
+52             dasNov3
+53             dipOrd1
+54                 dm1
+55                 dm2
+56                 dm3
+57                 dm6
+58                 dp2
+59                 dp3
+60             droAna1
+61             droAna2
+62             droEre1
+63             droGri1
+64             droMoj1
+65             droMoj2
+66             droPer1
+67             droSec1
+68             droSim1
+69             droVir1
+70             droVir2
+71             droYak1
+72             droYak2
+73             eboVir3
+74             echTel1
+75             echTel2
+76             equCab1
+77             equCab2
+78             eriEur1
+79             eriEur2
+80             felCat3
+81             felCat4
+82             felCat5
+83                 fr1
+84                 fr2
+85                 fr3
+86             gadMor1
+87             galGal2
+88             galGal3
+89             galGal4
+90             gasAcu1
+91             geoFor1
+92                  go
+93            go080130
+94            go140213
+95            go150121
+96             gorGor3
+97             hetGla1
+98             hetGla2
+99                hg16
+100               hg17
+101               hg18
+102               hg19
+103        hg19Patch10
+104         hg19Patch2
+105         hg19Patch5
+106         hg19Patch9
+107               hg38
+108         hg38Patch2
+109            hgFixed
+110             hgTemp
+111          hgcentral
+112            latCha1
+113            loxAfr3
+114            macEug1
+115            macEug2
+116            melGal1
+117            melUnd1
+118            micMur1
+119               mm10
+120         mm10Patch1
+121                mm5
+122                mm6
+123                mm7
+124                mm8
+125                mm9
+126            monDom1
+127            monDom4
+128            monDom5
+129            musFur1
+130            myoLuc2
+131            nomLeu1
+132            nomLeu2
+133            nomLeu3
+134            ochPri2
+135            ochPri3
+136            oreNil1
+137            oreNil2
+138            ornAna1
+139            oryCun2
+140            oryLat2
+141            otoGar3
+142            oviAri1
+143            oviAri3
+144            panTro1
+145            panTro2
+146            panTro3
+147            panTro4
+148            papAnu2
+149            papHam1
+150 performance_schema
+151            petMar1
+152            petMar2
+153            ponAbe2
+154            priPac1
+155            proCap1
+156     proteins120806
+157     proteins121210
+158     proteins140122
+159     proteins150225
+160           proteome
+161            pteVam1
+162            rheMac1
+163            rheMac2
+164            rheMac3
+165                rn3
+166                rn4
+167                rn5
+168                rn6
+169            sacCer1
+170            sacCer2
+171            sacCer3
+172            saiBol1
+173            sarHar1
+174            sorAra1
+175            sorAra2
+176           sp120323
+177           sp121210
+178           sp140122
+179           sp150225
+180            speTri2
+181            strPur1
+182            strPur2
+183            susScr2
+184            susScr3
+185            taeGut1
+186            taeGut2
+187            tarSyr1
+188            tarSyr2
+189               test
+190            tetNig1
+191            tetNig2
+192            triMan1
+193            tupBel1
+194            turTru2
+195            uniProt
+196            vicPac1
+197            vicPac2
+198           visiGene
+199            xenTro1
+200            xenTro2
+201            xenTro3
+
+> dbDisconnect(meowDB)
+[1] TRUE
+
+> blahblah <- dbConnect(MySQL(),user="genome",db="hg19",host="genome-mysql.cse.ucsc.edu")
+> meowTables <- dbListTables(blahblah)
+> length(meowTables)
+[1] 11012
+> meowTables[1:5]
+[1] "HInv"         "HInvGeneMrna" "acembly"      "acemblyClass" "acemblyPep"  
+> dbListFields(hg19,"affyU133Plus2")
+> dbListFields(blahblah,"affyU133Plus2")
+ [1] "bin"         "matches"     "misMatches"  "repMatches"  "nCount"      "qNumInsert" 
+ [7] "qBaseInsert" "tNumInsert"  "tBaseInsert" "strand"      "qName"       "qSize"      
+[13] "qStart"      "qEnd"        "tName"       "tSize"       "tStart"      "tEnd"       
+[19] "blockCount"  "blockSizes"  "qStarts"     "tStarts"    
+> dbGetQuery(blahblah,"select count(*) from affyU133Plus2")
+  count(*)
+1    58463
+> meowAFFYdata <- dbReadTable(blahblah,"affyU133Plus2")
+There were 16 warnings (use warnings() to see them)
+> warnings()
+Warning messages:
+1: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 0 imported as numeric
+2: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 1 imported as numeric
+3: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 2 imported as numeric
+4: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 3 imported as numeric
+5: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 4 imported as numeric
+6: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 5 imported as numeric
+7: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 6 imported as numeric
+8: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 7 imported as numeric
+9: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 8 imported as numeric
+10: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 11 imported as numeric
+11: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 12 imported as numeric
+12: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 13 imported as numeric
+13: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 15 imported as numeric
+14: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 16 imported as numeric
+15: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 17 imported as numeric
+16: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 18 imported as numeric
+> head(meowAFFYdata)
+  bin matches misMatches repMatches nCount qNumInsert qBaseInsert tNumInsert
+1 585     530          4          0     23          3          41          3
+2 585    3355         17          0    109          9          67          9
+3 585    4156         14          0     83         16          18          2
+4 585    4667          9          0     68         21          42          3
+5 585    5180         14          0    167         10          38          1
+6 585     468          5          0     14          0           0          0
+  tBaseInsert strand        qName qSize qStart qEnd tName     tSize tStart  tEnd
+1         898      -  225995_x_at   637      5  603  chr1 249250621  14361 15816
+2       11621      -  225035_x_at  3635      0 3548  chr1 249250621  14381 29483
+3          93      -  226340_x_at  4318      3 4274  chr1 249250621  14399 18745
+4        5743      - 1557034_s_at  4834     48 4834  chr1 249250621  14406 24893
+5          29      -    231811_at  5399      0 5399  chr1 249250621  19688 25078
+6           0      -    236841_at   487      0  487  chr1 249250621  27542 28029
+  blockCount                                                                 blockSizes
+1          5                                                          93,144,229,70,21,
+2         17              73,375,71,165,303,360,198,661,201,1,260,250,74,73,98,155,163,
+3         18                 690,10,32,33,376,4,5,15,5,11,7,41,277,859,141,51,443,1253,
+4         23 99,352,286,24,49,14,6,5,8,149,14,44,98,12,10,355,837,59,8,1500,133,624,58,
+5         11                                       131,26,1300,6,4,11,4,7,358,3359,155,
+6          1                                                                       487,
+                                                                                                 qStarts
+1                                                                                    34,132,278,541,611,
+2                        87,165,540,647,818,1123,1484,1682,2343,2545,2546,2808,3058,3133,3206,3317,3472,
+3                   44,735,746,779,813,1190,1195,1201,1217,1223,1235,1243,1285,1564,2423,2565,2617,3062,
+4 0,99,452,739,764,814,829,836,842,851,1001,1016,1061,1160,1173,1184,1540,2381,2441,2450,3951,4103,4728,
+5                                                     0,132,159,1460,1467,1472,1484,1489,1497,1856,5244,
+6                                                                                                     0,
+                                                                                                                                     tStarts
+1                                                                                                             14361,14454,14599,14968,15795,
+2                                     14381,14454,14969,15075,15240,15543,15903,16104,16853,17054,17232,17492,17914,17988,18267,24736,29320,
+3                               14399,15089,15099,15131,15164,15540,15544,15549,15564,15569,15580,15587,15628,15906,16857,16998,17049,17492,
+4 14406,20227,20579,20865,20889,20938,20952,20958,20963,20971,21120,21134,21178,21276,21288,21298,21653,22492,22551,22559,24059,24211,24835,
+5                                                                         19688,19819,19845,21145,21151,21155,21166,21170,21177,21535,24923,
+6                                                                                                                                     27542,
 
 
-blahblah <- dbConnect(MySQL(),user="genome",db="hg19",host="genome-mysql.cse.ucsc.edu")
-meowTables <- dbListTables(blahblah)
-length(meowTables)
-meowTables[1:5]
+> meowQuery <- dbSendQuery(blahblah,"select * from affyU133Plus2 where misMatches between 1 and 3")
+There were 16 warnings (use warnings() to see them)
+> warnings()
+Warning messages:
+1: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 0 imported as numeric
+2: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 1 imported as numeric
+3: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 2 imported as numeric
+4: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 3 imported as numeric
+5: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 4 imported as numeric
+6: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 5 imported as numeric
+7: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 6 imported as numeric
+8: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 7 imported as numeric
+9: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 8 imported as numeric
+10: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 11 imported as numeric
+11: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 12 imported as numeric
+12: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 13 imported as numeric
+13: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 15 imported as numeric
+14: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 16 imported as numeric
+15: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 17 imported as numeric
+16: In .local(conn, statement, ...) :
+  Unsigned INTEGER in col 18 imported as numeric
+> MeowAffyMis <- fetch(meowQuery); quantile(MeowAffyMis$misMatches)
+  0%  25%  50%  75% 100% 
+   1    1    2    2    3 
+> meowMisSmall <- fetch(meowQuery,n=10); 
+> meowMisSmall
+   bin matches misMatches repMatches nCount qNumInsert qBaseInsert tNumInsert
+1  866    1065          3          0     18          1          14          1
+2  866    1846          1          0      9          3          22         10
+3  866     932          3          0     35          1           1          8
+4  866     932          3          0     35          1           1          8
+5  866    1543          1          0     68          2           2          3
+6  866     847          1          0      0          1           1          9
+7  866    2941          2          0      0          0           0         16
+8  874    2679          3          0      0          0           0          5
+9  874     689          2          0      3          0           0          0
+10 874     627          1          0      3          3           3          0
+   tBaseInsert strand       qName qSize qStart qEnd tName     tSize   tStart     tEnd
+1         3613      -   225593_at  1131      0 1100  chr1 249250621 36859020 36863719
+2        26349      -   227359_at  1878      0 1878  chr1 249250621 36881416 36909621
+3         7715      +   223291_at   972      1  972  chr1 249250621 36921278 36929963
+4         7715      + 223292_s_at   972      1  972  chr1 249250621 36921278 36929963
+5         6960      - 226296_s_at  1658      0 1614  chr1 249250621 36921374 36929946
+6         7717      - 221437_s_at   852      3  852  chr1 249250621 36921388 36929953
+7        13863      - 203591_s_at  2943      0 2943  chr1 249250621 36931694 36948500
+8         7144      +   218810_at  2697      0 2682  chr1 249250621 37940152 37949978
+9            0      -   228517_at   714      1  695  chr1 249250621 37958178 37958872
+10           0      -   235837_at   673      2  636  chr1 249250621 38000050 38000681
+   blockCount                                                     blockSizes
+1           3                                                   734,131,221,
+2          13                   578,350,64,140,70,45,8,76,104,81,168,155,17,
+3          10                               248,192,59,85,49,12,64,45,208,8,
+4          10                               248,192,59,85,49,12,64,45,208,8,
+5           6                                        152,192,467,533,204,64,
+6          11                           138,192,59,85,49,12,64,45,50,122,32,
+7          17 734,82,94,141,147,102,189,214,74,154,170,188,124,297,84,60,89,
+8           6                                       78,481,140,235,107,1641,
+9           1                                                           694,
+10          4                                                  446,76,14,95,
+                                                                           qStarts
+1                                                                      31,765,910,
+2                     0,598,948,1012,1152,1222,1268,1277,1353,1457,1538,1706,1861,
+3                                           1,249,441,500,585,634,647,711,756,964,
+4                                           1,249,441,500,585,634,647,711,756,964,
+5                                                        44,196,388,856,1390,1594,
+6                                       0,138,330,389,474,523,536,600,645,695,817,
+7  0,734,816,910,1051,1198,1300,1489,1703,1777,1931,2101,2289,2413,2710,2794,2854,
+8                                                           0,78,559,699,934,1041,
+9                                                                              19,
+10                                                                 37,484,561,576,
+                                                                                                                                                     tStarts
+1                                                                                                                                36859020,36863367,36863498,
+2                                      36881416,36883506,36884591,36886076,36887750,36888368,36888413,36888421,36888963,36897402,36898022,36904356,36909604,
+3                                                                 36921278,36921787,36923523,36926292,36926864,36927688,36927700,36929406,36929746,36929955,
+4                                                                 36921278,36921787,36923523,36926292,36926864,36927688,36927700,36929406,36929746,36929955,
+5                                                                                                     36921374,36921787,36923523,36923990,36924523,36929882,
+6                                                        36921388,36921787,36923523,36926292,36926864,36927688,36927700,36929406,36929746,36929797,36929921,
+7  36931694,36932830,36933158,36933422,36933675,36934756,36935252,36937033,36937666,36937838,36938117,36939035,36939364,36940977,36945033,36947078,36948411,
+8                                                                                                     37940152,37941059,37945890,37947201,37948034,37948337,
+9                                                                                                                                                  37958178,
+10                                                                                                                      38000050,38000496,38000572,38000586,
 
-dbListFields(hg19,"affyU133Plus2")
 
-dbGetQuery(blahblah,"select count(*) from affyU133Plus2")
-
-meowAFFYdata <- dbReadTable(hg19,"affyU133Plus2")
-head(meowAFFYdata)
-
-meowQuery <- dbSendQuery(hg19,"select * from affyU133Plus2 where misMatches between 1 and 3")
-MeowAffyMis <- fetch(meowQuery); quantile(MeowAffyMis$misMatches)
-
-meowMisSmall <- fetch(meowQuery,n=10); 
-dbClearResult(meowQuery);
-
-dim(meowMisSmall)
-
-dbDisconnect(blahblah)
+> dbClearResult(meowQuery);
+[1] TRUE
+> dim(meowMisSmall)
+[1] 10 22
+> dbDisconnect(blahblah)
+[1] TRUE
