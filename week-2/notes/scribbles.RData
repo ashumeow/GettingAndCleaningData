@@ -1,0 +1,28 @@
+### READING FROM MYSQL
+
+meowDB <- dbConnect(MySQL(),user="genome",
+host="genome-mysql.cse.ucsc.edu")
+result <- dbGetQuery(meowDB,"show databases;"); dbDisconnect(meowDB);
+
+
+blahblah <- dbConnect(MySQL(),user="genome",db="hg19",host="genome-mysql.cse.ucsc.edu")
+meowTables <- dbListTables(blahblah)
+length(meowTables)
+meowTables[1:5]
+
+dbListFields(hg19,"affyU133Plus2")
+
+dbGetQuery(blahblah,"select count(*) from affyU133Plus2")
+
+meowAFFYdata <- dbReadTable(hg19,"affyU133Plus2")
+head(meowAFFYdata)
+
+meowQuery <- dbSendQuery(hg19,"select * from affyU133Plus2 where misMatches between 1 and 3")
+MeowAffyMis <- fetch(meowQuery); quantile(MeowAffyMis$misMatches)
+
+meowMisSmall <- fetch(meowQuery,n=10); 
+dbClearResult(meowQuery);
+
+dim(meowMisSmall)
+
+dbDisconnect(blahblah)
