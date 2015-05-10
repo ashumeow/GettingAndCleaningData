@@ -514,3 +514,30 @@ Warning messages:
 [3,]   14    8
 [4,]    4    9
 [5,]    5   10
+
+## READING DATA FROM THE WEB
+> con=setInternet2("https://scholar.google.com/citations?hl=en&user=f1marj0AAAAJ&view_op=list_works")
+> htmlCode=readLines(con)
+> close(con)
+> htmlCode
+
+> library(XML)
+> url <- "https://scholar.google.com/citations?hl=en&user=f1marj0AAAAJ&view_op=list_works"
+> html <- htmlTreeParse(url,useInternalNodes=T)
+> xpathSApply(html,"//title",xmlValue)
+> xpathSApply(html,"//td[@id='col-citedby']",xmlValue)
+
+> install.packages("httr")
+> library(httr); html2=GET(url)
+> content2 = content(html2,as="text")
+> parsedHtml = htmlParse(content2,asText=TRUE)
+> xpathSApply(parsedHtml,"//title",xmlValue)
+
+> ig = GET("http://httpbin.org/basic-auth/user/passwd",
+		authenticate("user,"passwd"))
+> ig
+> names(ig)
+
+> google=handle("https://google.com")
+> ig = GET(handle=google,path="/")
+> ig2 = GET(handle=google,path="search")
