@@ -584,3 +584,27 @@ Response [http://httpbin.org/basic-auth/user/passwd]
 > google=handle("http://google.com")
 > ig1=GET(handle=google,path="/")
 > ig2=GET(handle=google,path="search")
+
+## READING DATA FROM TWITTER API
+> library(httr)
+> myapp = oauth_app("twitter",key="Add consumer key here",secret="Add consumer secret key here")
+> sig=sign_oauth1.0(myapp,token="Add token here", token_secret="Add token secret")
+Use a local file to cache OAuth access credentials between R sessions?
+1: Yes
+2: No
+Selection: 2
+> homeTL=GET("https://api.twitter.com/1.1/statuses/home_timeline.json",sig)
+> json1=content(homeTL)
+> json2=jsonlite::fromJSON(toJSON(json1))
+Error in jsonlite::fromJSON(toJSON(json1)) : 
+  could not find function "toJSON"
+> library(jsonlite)
+
+Attaching package: ‘jsonlite’
+
+The following object is masked from ‘package:utils’:
+
+    View
+
+> json2=jsonlite::fromJSON(toJSON(json1))
+> json2[1,1:4]
