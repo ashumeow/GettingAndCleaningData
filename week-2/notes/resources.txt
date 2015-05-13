@@ -1,2 +1,2 @@
-Week 2 - Synatax and commands:-
+Week 2 - Syntax and commands:-
 http://rstudio-pubs-static.s3.amazonaws.com/16815_e9607bbe2eb140278f4146a2560d83e7.html
