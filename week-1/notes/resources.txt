@@ -1,0 +1,4 @@
+(1) Reading data from XML:-
+http://giventhedata.blogspot.in/2012/06/r-and-web-for-beginners-part-ii-xml-in.html
+Related lecture:
+https://github.com/ashumeow/GettingAndCleaningData/blob/master/week-1/notes/scribbles.RData#L96
