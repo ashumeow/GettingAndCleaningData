@@ -516,28 +516,71 @@ Warning messages:
 [5,]    5   10
 
 ## READING DATA FROM THE WEB
-> con=setInternet2("https://scholar.google.com/citations?hl=en&user=f1marj0AAAAJ&view_op=list_works")
-> htmlCode=readLines(con)
-> close(con)
-> htmlCode
-
 > library(XML)
-> url <- "https://scholar.google.com/citations?hl=en&user=f1marj0AAAAJ&view_op=list_works"
+> library(httr)
+> con = url("http://scholar.google.co.in/citations?user=f1marj0AAAAJ&hl=en")
+> htmlCode = readLines(con)
+Warning message:
+In readLines(con) :
+  incomplete final line found on 'http://scholar.google.co.in/citations?user=f1marj0AAAAJ&hl=en'
+> close(con)
+> substr(htmlCode,start=1,stop=1000)
+[1] "<!doctype html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=ISO-8859-1\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"referrer\" content=\"always\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=2\"><style>@viewport{width:device-width;min-zoom:1;max-zoom:2;}</style><meta name=\"format-detection\" content=\"telephone=no\"><style>html,body,form,table,div,h1,h2,h3,h4,h5,h6,img,ol,ul,li,button{margin:0;padding:0;border:0;}table{border-collapse:collapse;border-width:0;empty-cells:show;}#gs_top{position:relative;min-width:964px;-webkit-tap-highlight-color:rgba(0,0,0,0);}#gs_top>*:not(#x){-webkit-tap-highlight-color:rgba(204,204,204,.5);}.gs_el_ph #gs_top,.gs_el_ta #gs_top{min-width:300px;}body,td{font-size:13px;font-family:Arial,sans-serif;line-height:1.24}body{background:#fff;color:#222;-webkit-text-size-adjust:100%;-moz-text-size-adjust:none;}.gs_gray{color:#777777}.gs_red{color:#dd4b39}.gs_grn{color:#006621}.g"
+> class(htmlCode)
+[1] "character"
+> length(htmlCode)
+[1] 1
+> nchar(htmlCode)
+[1] 83326
+> nchar(htmlCode)
+[1] 83326
+> ## Parsin with XML
+> url <- "http://scholar.google.co.in/citations?user=f1marj0AAAAJ&hl=en"
 > html <- htmlTreeParse(url,useInternalNodes=T)
 > xpathSApply(html,"//title",xmlValue)
+[1] "Aswini S - Google Scholar Citations"
 > xpathSApply(html,"//td[@id='col-citedby']",xmlValue)
-
-> install.packages("httr")
-> library(httr); html2=GET(url)
-> content2 = content(html2,as="text")
-> parsedHtml = htmlParse(content2,asText=TRUE)
-> xpathSApply(parsedHtml,"//title",xmlValue)
-
-> ig = GET("http://httpbin.org/basic-auth/user/passwd",
-		authenticate("user,"passwd"))
-> ig
-> names(ig)
-
-> google=handle("https://google.com")
-> ig = GET(handle=google,path="/")
-> ig2 = GET(handle=google,path="search")
+list()
+> ## Getting from HTTR package
+> html2 = GET(url)
+> class(html2)
+[1] "response"
+> content2=content(html2,as="text")
+> class(content2)
+[1] "character"
+> parsedHTML=htmlParse(content2,asText=TRUE)
+> xpathSApply(parsedHTML,"//title",xmlValue)
+[1] "Aswini S - Google Scholar Citations"
+> ## accessing websites with passwords
+> ig1=GET("http://httpbin.org/basic-auth/user/passwd")
+> ig1
+Response [http://httpbin.org/basic-auth/user/passwd]
+  Date: 2015-05-14 00:50
+  Status: 401
+  Content-Type: <unknown>
+<EMPTY BODY>
+> names(ig1)
+[1] "url"         "status_code" "headers"     "all_headers" "cookies"    
+[6] "content"     "date"        "times"       "request"    
+> ig1$status_code
+[1] 401
+> ig2=GET("http://httpbin.org/basic-auth/user/passwd",authenticate("user","passwd"))
+> ig2$status_code
+[1] 200
+> ig2
+Response [http://httpbin.org/basic-auth/user/passwd]
+  Date: 2015-05-14 00:51
+  Status: 200
+  Content-Type: application/json
+  Size: 47 B
+{
+  "authenticated": true, 
+  "user": "user"
+}
+> names(ig2)
+[1] "url"         "status_code" "headers"     "all_headers" "cookies"    
+[6] "content"     "date"        "times"       "request"    
+> ## using handles
+> google=handle("http://google.com")
+> ig1=GET(handle=google,path="/")
+> ig2=GET(handle=google,path="search")
