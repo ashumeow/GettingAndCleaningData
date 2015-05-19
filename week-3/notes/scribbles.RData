@@ -100,3 +100,552 @@ The downloaded binary packages are in
 2    3   NA   12  0.4966936  0.08909424
 3    5    6   14  0.0631830  0.47838570
 5    4    9   13 -0.5361329  1.00053336
+
+
+> ##################
+> ## Summarizing data
+> meowUrl <- "https://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessType=DOWNLOAD"
+> download.file(meowUrl,destfile="./get-data/restaurant.csv")
+trying URL 'https://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessType=DOWNLOAD'
+Content type 'text/csv; charset=utf-8' length 112114 bytes (109 KB)
+opened URL
+downloaded 109 KB
+
+> restData <- read.csv("./get-data/restaurant.csv")
+> head(restData,n=3)
+   name zipCode neighborhood
+1   410   21206    Frankford
+2  1919   21231  Fells Point
+3 SAUTE   21224       Canton
+  councilDistrict policeDistrict
+1               2   NORTHEASTERN
+2               1   SOUTHEASTERN
+3               1   SOUTHEASTERN
+                         Location.1
+1 4509 BELAIR ROAD\nBaltimore, MD\n
+2    1919 FLEET ST\nBaltimore, MD\n
+3   2844 HUDSON ST\nBaltimore, MD\n
+> tail(restData,n=3)
+             name zipCode
+1325 ZINK'S CAFÂ   21213
+1326 ZISSIMOS BAR   21211
+1327       ZORBAS   21224
+      neighborhood councilDistrict
+1325 Belair-Edison              13
+1326       Hampden               7
+1327     Greektown               2
+     policeDistrict
+1325   NORTHEASTERN
+1326       NORTHERN
+1327   SOUTHEASTERN
+                             Location.1
+1325 3300 LAWNVIEW AVE\nBaltimore, MD\n
+1326      1023 36TH ST\nBaltimore, MD\n
+1327  4710 EASTERN Ave\nBaltimore, MD\n
+> summary(restData)
+                           name     
+ MCDONALD'S                  :   8  
+ POPEYES FAMOUS FRIED CHICKEN:   7  
+ SUBWAY                      :   6  
+ KENTUCKY FRIED CHICKEN      :   5  
+ BURGER KING                 :   4  
+ DUNKIN DONUTS               :   4  
+ (Other)                     :1293  
+    zipCode             neighborhood
+ Min.   :-21226   Downtown    :128  
+ 1st Qu.: 21202   Fells Point : 91  
+ Median : 21218   Inner Harbor: 89  
+ Mean   : 21185   Canton      : 81  
+ 3rd Qu.: 21226   Federal Hill: 42  
+ Max.   : 21287   Mount Vernon: 33  
+                  (Other)     :863  
+ councilDistrict 
+ Min.   : 1.000  
+ 1st Qu.: 2.000  
+ Median : 9.000  
+ Mean   : 7.191  
+ 3rd Qu.:11.000  
+ Max.   :14.000  
+                 
+      policeDistrict
+ SOUTHEASTERN:385   
+ CENTRAL     :288   
+ SOUTHERN    :213   
+ NORTHERN    :157   
+ NORTHEASTERN: 72   
+ EASTERN     : 67   
+ (Other)     :145   
+                          Location.1    
+ 1101 RUSSELL ST\nBaltimore, MD\n:   9  
+ 201 PRATT ST\nBaltimore, MD\n   :   8  
+ 2400 BOSTON ST\nBaltimore, MD\n :   8  
+ 300 LIGHT ST\nBaltimore, MD\n   :   5  
+ 300 CHARLES ST\nBaltimore, MD\n :   4  
+ 301 LIGHT ST\nBaltimore, MD\n   :   4  
+ (Other)                         :1289  
+> str(restData)
+'data.frame': 1327 obs. of  6 variables:
+ $ name           : Factor w/ 1277 levels "#1 CHINESE KITCHEN",..: 9 3 992 1 2 4 5 6 7 8 ...
+ $ zipCode        : int  21206 21231 21224 21211 21223 21218 21205 21211 21205 21231 ...
+ $ neighborhood   : Factor w/ 173 levels "Abell","Arlington",..: 53 52 18 66 104 33 98 133 98 157 ...
+ $ councilDistrict: int  2 1 1 14 9 14 13 7 13 1 ...
+ $ policeDistrict : Factor w/ 9 levels "CENTRAL","EASTERN",..: 3 6 6 4 8 3 6 4 6 6 ...
+ $ Location.1     : Factor w/ 1210 levels "1 BIDDLE ST\nBaltimore, MD\n",..: 835 334 554 755 492 537 505 530 507 569 ...
+> ##
+> quantile(restData$councilDistrict,na.rm=TRUE)
+  0%  25%  50%  75% 100% 
+   1    2    9   11   14 
+> quantile(restData$councilDistrict,probs=c(0.5,0.75,0.9))
+50% 75% 90% 
+  9  11  12 
+> table(restData$zipCode,useNA="ifany")
+
+-21226  21201  21202  21205  21206 
+     1    136    201     27     30 
+ 21207  21208  21209  21210  21211 
+     4      1      8     23     41 
+ 21212  21213  21214  21215  21216 
+    28     31     17     54     10 
+ 21217  21218  21220  21222  21223 
+    32     69      1      7     56 
+ 21224  21225  21226  21227  21229 
+   199     19     18      4     13 
+ 21230  21231  21234  21237  21239 
+   156    127      7      1      3 
+ 21251  21287 
+     2      1 
+> ##
+> sum(is.na(restData$councilDistrict))
+[1] 0
+> any(is.na(restData$councilDistrict))
+[1] FALSE
+> all(restData$zipCode > 0)
+[1] FALSE
+> ###
+> colSums(is.na(restData))
+           name         zipCode 
+              0               0 
+   neighborhood councilDistrict 
+              0               0 
+ policeDistrict      Location.1 
+              0               0 
+> all(colSums(is.na(restData))==0)
+[1] TRUE
+> table(restData$zipCode %in% c("21212"))
+
+FALSE  TRUE 
+ 1299    28 
+> table(restData$zipCode %in% c("21212","21213"))
+
+FALSE  TRUE 
+ 1268    59 
+> restData[restData$zipCode %in% c("21212","21213"),]
+                                     name
+29                      BAY ATLANTIC CLUB
+39                            BERMUDA BAR
+92                              ATWATER'S
+111            BALTIMORE ESTONIAN SOCIETY
+187                              CAFE ZEN
+220                   CERIELLO FINE FOODS
+266    CLIFTON PARK GOLF COURSE SNACK BAR
+276                CLUB HOUSE BAR & GRILL
+289                 CLUBHOUSE BAR & GRILL
+291                           COCKY LOU'S
+362       DREAM TAVERN, CARRIBEAN  U.S.A.
+373                         DUNKIN DONUTS
+383        EASTSIDE  SPORTS  SOCIAL  CLUB
+417                      FIELDS OLD TRAIL
+475                             GRAND CRU
+545                           RANDY'S BAR
+604     MURPHY'S NEIGHBORHOOD BAR & GRILL
+616                                NEOPOL
+620             NEW CLUB THUNDERBIRD INC.
+626                    NEW MAYFIELD, INC.
+678                          IKAN SEAFOOD
+711                          KAY-CEE CLUB
+763                                LA'RAE
+777                  LEMONGRASS BALTIMORE
+779                   LEN'S SANDWICH SHOP
+845                            MCDONALD'S
+852                            MCDONALD'S
+873                  NEW REX LIQUORS,INC.
+895                             OK TAVERN
+919                          PANERA BREAD
+940                    PEIWEI ASIAN DINER
+949                   PERGUSA ENTERPRISES
+957               PHANTOM'S BAR AND GRILL
+976          POPEYES FAMOUS FRIED CHICKEN
+994                         ROBBIE'S NEST
+1017                          RUTLAND BAR
+1018                      RYAN'S DAUGHTER
+1022         saigon remembered restaurant
+1053                SHIRLEY'S  HONEY HOLE
+1120                     STEEPLE CHASE II
+1122                               SUBWAY
+1153                              TAM-TAM
+1155                                TASTE
+1159                         TAYLORS EAST
+1186                THE EDGE BAR & LOUNGE
+1187 THE EDGE BAR & LOUNGE - KITCHEN AREA
+1198               THE HOLLOW BAR & GRILL
+1209             THE NEW BUCKETT'S LOUNGE
+1232                         THREE  ACE'S
+1246                 TORAIN'S  HIDE-A-WAY
+1259                    TSUNAMI BALTIMORE
+1287                         VITO'S PIZZA
+1298 WENDY'S OLD FASHIONED HAMBURGERS #96
+1304                 WHITTEN'S  (4502-04)
+1312                          wozi lounge
+1319           YETI RESTAURANT & CARRYOUT
+1320                     YORK CLUB TAVERN
+1323            ZEN WEST ROADSIDE CANTINA
+1325                         ZINK'S CAFÂ
+     zipCode
+29     21212
+39     21213
+92     21212
+111    21213
+187    21212
+220    21212
+266    21213
+276    21213
+289    21213
+291    21213
+362    21213
+373    21212
+383    21213
+417    21212
+475    21212
+545    21213
+604    21212
+616    21212
+620    21213
+626    21213
+678    21212
+711    21212
+763    21213
+777    21213
+779    21213
+845    21213
+852    21212
+873    21212
+895    21213
+919    21212
+940    21212
+949    21212
+957    21213
+976    21212
+994    21213
+1017   21213
+1018   21212
+1022   21212
+1053   21213
+1120   21213
+1122   21213
+1153   21212
+1155   21212
+1159   21213
+1186   21213
+1187   21213
+1198   21212
+1209   21213
+1232   21213
+1246   21213
+1259   21213
+1287   21212
+1298   21212
+1304   21213
+1312   21212
+1319   21212
+1320   21212
+1323   21212
+1325   21213
+                    neighborhood
+29                      Downtown
+39                 Broadway East
+92     Chinquapin Park-Belvedere
+111           South Clifton Park
+187                     Rosebank
+220    Chinquapin Park-Belvedere
+266                  Darley Park
+276  Orangeville Industrial Area
+289  Orangeville Industrial Area
+291                Broadway East
+362                Broadway East
+373                     Homeland
+383                Broadway East
+417                   Mid-Govans
+475    Chinquapin Park-Belvedere
+545                Broadway East
+604                   Mid-Govans
+616    Chinquapin Park-Belvedere
+620                  Middle East
+626                Belair-Edison
+678    Chinquapin Park-Belvedere
+711                     Homeland
+763                       Oliver
+777                 Little Italy
+779                Broadway East
+845           South Clifton Park
+852               Radnor-Winston
+873                  Wilson Park
+895                Biddle Street
+919                  Lake Walker
+940                   Cedarcroft
+949                     Rosebank
+957                Belair-Edison
+976               Winston-Govans
+994                Broadway East
+1017               Broadway East
+1018   Chinquapin Park-Belvedere
+1022                  Mid-Govans
+1053               Broadway East
+1120               Biddle Street
+1122                      Oliver
+1153                  Mid-Govans
+1155                  Mid-Govans
+1159                       Berea
+1186               Broadway East
+1187               Broadway East
+1198                    Rosebank
+1209               Broadway East
+1232               Belair-Edison
+1246               Broadway East
+1259                Little Italy
+1287                  Cedarcroft
+1298                    Homeland
+1304           Claremont-Freedom
+1312                    Guilford
+1319                    Rosebank
+1320                    Homeland
+1323                    Rosebank
+1325               Belair-Edison
+     councilDistrict policeDistrict
+29                11        CENTRAL
+39                12        EASTERN
+92                 4       NORTHERN
+111               12        EASTERN
+187                4       NORTHERN
+220                4       NORTHERN
+266               14   NORTHEASTERN
+276               13        EASTERN
+289               13        EASTERN
+291               12        EASTERN
+362               13        EASTERN
+373                4       NORTHERN
+383               13        EASTERN
+417                4       NORTHERN
+475                4       NORTHERN
+545               12        EASTERN
+604                4       NORTHERN
+616                4       NORTHERN
+620               13        EASTERN
+626               13   NORTHEASTERN
+678                4       NORTHERN
+711                4       NORTHERN
+763               12        EASTERN
+777                1   SOUTHEASTERN
+779               12        EASTERN
+845               12        EASTERN
+852                4       NORTHERN
+873                4       NORTHERN
+895               13        EASTERN
+919                4       NORTHERN
+940                4       NORTHERN
+949                4       NORTHERN
+957                3   NORTHEASTERN
+976                4       NORTHERN
+994               12        EASTERN
+1017              12        EASTERN
+1018               4       NORTHERN
+1022               4       NORTHERN
+1053              13        EASTERN
+1120              13        EASTERN
+1122              12        EASTERN
+1153               4       NORTHERN
+1155               4       NORTHERN
+1159              13        EASTERN
+1186              12        EASTERN
+1187              12        EASTERN
+1198               4       NORTHERN
+1209              13        EASTERN
+1232               3   NORTHEASTERN
+1246              12        EASTERN
+1259               1   SOUTHEASTERN
+1287               4       NORTHERN
+1298               4       NORTHERN
+1304              13   NORTHEASTERN
+1312               4       NORTHERN
+1319               4       NORTHERN
+1320               4       NORTHERN
+1323               4       NORTHERN
+1325              13   NORTHEASTERN
+                               Location.1
+29        206 REDWOOD ST\nBaltimore, MD\n
+39        1801 NORTH AVE\nBaltimore, MD\n
+92     529 BELVEDERE AVE\nBaltimore, MD\n
+111       1932 BELAIR RD\nBaltimore, MD\n
+187    438 BELVEDERE AVE\nBaltimore, MD\n
+220    529 BELVEDERE AVE\nBaltimore, MD\n
+266        2701 ST LO DR\nBaltimore, MD\n
+276      4217 ERDMAN AVE\nBaltimore, MD\n
+289      4217 ERDMAN AVE\nBaltimore, MD\n
+291       2101 NORTH AVE\nBaltimore, MD\n
+362   2300 LAFAYETTE AVE\nBaltimore, MD\n
+373         5422 YORK RD\nBaltimore, MD\n
+383  1203 COLLINGTON AVE\nBaltimore, MD\n
+417         5723 YORK RD\nBaltimore, MD\n
+475    527 BELVEDERE AVE\nBaltimore, MD\n
+545       2135 NORTH AVE\nBaltimore, MD\n
+604         5847 YORK RD\nBaltimore, MD\n
+616    529 BELVEDERE AVE\nBaltimore, MD\n
+620        2201 CHASE ST\nBaltimore, MD\n
+626       3349 BELAIR RD\nBaltimore, MD\n
+678    529 BELVEDERE AVE\nBaltimore, MD\n
+711     201 HOMELAND AVE\nBaltimore, MD\n
+763      1000 HOFFMAN ST\nBaltimore, MD\n
+777     1300 BANK STREET\nBaltimore, MD\n
+779   1500 WASHINGTON ST\nBaltimore, MD\n
+845        2001 BROADWAY\nBaltimore, MD\n
+852         5100 YORK RD\nBaltimore, MD\n
+873         4637 YORK RD\nBaltimore, MD\n
+895       2301 BIDDLE ST\nBaltimore, MD\n
+919     6307 1 2 YORK RD\nBaltimore, MD\n
+940         6302 YORK RD\nBaltimore, MD\n
+949         5928 YORK RD\nBaltimore, MD\n
+957       3539 BELAIR RD\nBaltimore, MD\n
+976         5002 YORK RD\nBaltimore, MD\n
+994       2250 NORTH AVE\nBaltimore, MD\n
+1017    1508 RUTLAND AVE\nBaltimore, MD\n
+1018   600 BELVEDERE AVE\nBaltimore, MD\n
+1022        5857 york rd\nBaltimore, MD\n
+1053      2300 OLIVER ST\nBaltimore, MD\n
+1120       2401 CHASE ST\nBaltimore, MD\n
+1122      1400 NORTH AVE\nBaltimore, MD\n
+1153        5722 YORK RD\nBaltimore, MD\n
+1155   510 BELVEDERE AVE\nBaltimore, MD\n
+1159     1201 POTOMAC ST\nBaltimore, MD\n
+1186     2015 FEDERAL ST\nBaltimore, MD\n
+1187     2015 FEDERAL ST\nBaltimore, MD\n
+1198        5921 YORK RD\nBaltimore, MD\n
+1209     1432 CHESTER ST\nBaltimore, MD\n
+1232      3534 belair RD\nBaltimore, MD\n
+1246   1701 ELLSWORTH ST\nBaltimore, MD\n
+1259        1300 BANK ST\nBaltimore, MD\n
+1287        6304 YORK RD\nBaltimore, MD\n
+1298        5615 YORK RD\nBaltimore, MD\n
+1304     4502 ERDMAN AVE\nBaltimore, MD\n
+1312        4515 YORK RD\nBaltimore, MD\n
+1319        5926 YORK RD\nBaltimore, MD\n
+1320        5407 YORK RD\nBaltimore, MD\n
+1323        5916 YORK RD\nBaltimore, MD\n
+1325   3300 LAWNVIEW AVE\nBaltimore, MD\n
+
+> ## cross tabs
+> data(UCBAdmissions)
+> DF = as.data.frame(UCBAdmissions)
+> summary(DF)
+      Admit       Gender   Dept 
+ Admitted:12   Male  :12   A:4  
+ Rejected:12   Female:12   B:4  
+                           C:4  
+                           D:4  
+                           E:4  
+                           F:4  
+      Freq      
+ Min.   :  8.0  
+ 1st Qu.: 80.0  
+ Median :170.0  
+ Mean   :188.6  
+ 3rd Qu.:302.5  
+ Max.   :512.0  
+
+> xt <- xtabs(Freq ~ Gender + Admit, data = DF)
+> xt
+        Admit
+Gender   Admitted Rejected
+  Male       1198     1493
+  Female      557     1278
+
+> ## flat tables
+> warpbreaks$replicate <- rep(1:9,len=54)
+> xt=xtabs(breaks ~.,data=warpbreaks)
+> xt
+, , replicate = 1
+
+    tension
+wool  L  M  H
+   A 26 18 36
+   B 27 42 20
+
+, , replicate = 2
+
+    tension
+wool  L  M  H
+   A 30 21 21
+   B 14 26 21
+
+, , replicate = 3
+
+    tension
+wool  L  M  H
+   A 54 29 24
+   B 29 19 24
+
+, , replicate = 4
+
+    tension
+wool  L  M  H
+   A 25 17 18
+   B 19 16 17
+
+, , replicate = 5
+
+    tension
+wool  L  M  H
+   A 70 12 10
+   B 29 39 13
+
+, , replicate = 6
+
+    tension
+wool  L  M  H
+   A 52 18 43
+   B 31 28 15
+
+, , replicate = 7
+
+    tension
+wool  L  M  H
+   A 51 35 28
+   B 41 21 15
+
+, , replicate = 8
+
+    tension
+wool  L  M  H
+   A 26 30 15
+   B 20 39 16
+
+, , replicate = 9
+
+    tension
+wool  L  M  H
+   A 67 36 26
+   B 44 29 28
+
+> ftable(xt)
+             replicate  1  2  3  4  5  6  7  8  9
+wool tension                                     
+A    L                 26 30 54 25 70 52 51 26 67
+     M                 18 21 29 17 12 18 35 30 36
+     H                 36 21 24 18 10 43 28 15 26
+B    L                 27 14 29 19 29 31 41 20 44
+     M                 42 26 19 16 39 28 21 39 29
+     H                 20 21 24 17 13 15 15 16 28
+> ## size of a dataset
+> fakeData=rnorm(1e5)
+> object.size(fakeData)
+800040 bytes
+> print(object.size(fakeData),units="MB")
+0.8 Mb
